@@ -1,9 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import { Counter } from "@/components/Counter";
-
-export default function Home() {
+export default function About() {
   return (
     <>
       <Head>
@@ -12,10 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Counter defaultCount={0} description="Classic Counter Example" />
-
-      <Link href="/about">
-        <a>Go to About</a>
+      <h1>About</h1>
+      <Link href="/">
+        <a>Go to Home</a>
       </Link>
     </>
   );
