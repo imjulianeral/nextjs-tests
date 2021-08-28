@@ -1,4 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import user from '@testing-library/user-event'
 
 import { Counter } from './Counter'
@@ -23,8 +28,10 @@ describe('Counter', () => {
         user.click(screen.getByRole('button', { name: 'Increment Counter' }))
       })
 
-      it('renders `Current Count: 1`', () => {
-        expect(screen.getByText('Current Count: 1')).toBeInTheDocument()
+      it('renders `Current Count: 1`', async () => {
+        await waitFor(() =>
+          expect(screen.getByText('Current Count: 1')).toBeInTheDocument()
+        )
       })
     })
 
@@ -54,9 +61,11 @@ describe('Counter', () => {
     })
 
     describe('When the incrementor changes to 5 and `+` button is clicked', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         user.type(screen.getByLabelText(/Incrementor/), '{selectall}5')
         user.click(screen.getByRole('button', { name: 'Increment Counter' }))
+        await screen.findByText('Current Count: 15')
+        await waitForElementToBeRemoved(() => screen.queryByText('I am to small'))
       })
 
       it('renders `Current Count: 15`', () => {

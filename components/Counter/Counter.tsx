@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type CounterProps = {
   description: string
@@ -8,6 +8,19 @@ type CounterProps = {
 export function Counter({ defaultCount, description }: CounterProps) {
   const [count, setCount] = useState(defaultCount)
   const [incrementor, setIncrementor] = useState(1)
+  const [bigEnough, setBigEnough] = useState(defaultCount >= 15)
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+
+    if (count >= 15) {
+      timer = setTimeout(() => {
+        setBigEnough(true)
+      }, 300)
+    }
+
+    return () => clearTimeout(timer)
+  }, [count])
 
   return (
     <>
@@ -31,10 +44,15 @@ export function Counter({ defaultCount, description }: CounterProps) {
       Current Count: {count}
       <button
         aria-label="Increment Counter"
-        onClick={() => setCount(value => value + incrementor)}
+        onClick={() =>
+          setTimeout(() => {
+            setCount(value => value + incrementor)
+          }, 200)
+        }
       >
         +
       </button>
+      {bigEnough ? null : <p>I am to small</p>}
     </>
   )
 }
